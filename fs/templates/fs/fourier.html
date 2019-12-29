@@ -1,0 +1,71 @@
+{% extends 'fs/base.html' %}
+{% load staticfiles %}
+
+{% block js %}
+    <script>
+    function increase() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4) {
+                var ajaxDisplay = document.getElementById("myImg");
+                var obj = JSON.parse(xhttp.responseText);
+
+                document.getElementById("myImg").src = obj.newsrc;
+
+            }
+        }
+        xhttp.open("POST", "", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("req=increase&src=".concat(document.getElementById("myImg").src));
+    }
+
+    function decrease() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4) {
+                var ajaxDisplay = document.getElementById("myImg");
+                var obj = JSON.parse(xhttp.responseText);
+                document.getElementById("myImg").src = obj.newsrc;
+
+            }
+        }
+        xhttp.open("POST", "", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("req=decrease&src=".concat(document.getElementById("myImg").src));
+    }
+
+    </script>
+
+{% endblock %}
+
+{% block body %}
+    {% csrf_token %}
+
+    <div class="row">
+         <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <img src="{% static 'fs/img/plot2.png' %}" id="myImg" class="img-fluid img-responsive">
+        <br><br>
+
+       <div class="row">
+            <div class="col-md-4 text-center">
+{#                <a href="/fourier/{{ pk }}/{{ coeffs }}/dec">#}
+                    <button class="btn btn-info center" onclick="decrease()">کاهش تعداد ضرائب</button>
+{#            </a>#}
+        </div>
+        <div class="col-md-4 text-center">
+            <a href="/fs"><button class="btn btn-primary">سیگنال جدید</button></a>
+        </div>
+        <div class="col-md-4 align-right text-center">
+{#            <a href="/fourier/{{ pk }}/{{ coeffs }}/inc">#}
+                    <button class="btn btn-info center"  onclick="increase()">افزایش تعداد ضرائب</button>
+{#            </a>#}
+        </div>
+       </div>
+    </div>
+    <div class="col-md-2"></div>
+
+    </div>
+
+
+{% endblock %}
